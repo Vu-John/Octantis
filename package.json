@@ -1,8 +1,8 @@
 {
-  "name": "ff-sidebar",
+  "name": "octantis",
   "version": "0.0.1",
   "description": "Put a description here",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "peerDependencies": {
     "react": "^15.5.4",
     "react-dom": "^15.5.4"

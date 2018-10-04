@@ -1,0 +1,39 @@
+.wrapper {
+  background-color: #fff;
+  box-shadow: 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px 0 rgba(63,63,68,.15);
+}
+
+.container {
+  margin: 0px 1.6rem;
+  padding: 1.6rem 0rem;
+  display: flex;
+  color: #212b36;
+  font-size: 1.4rem;
+}
+
+.container > span:first-child {
+  width: 60px;
+  color: #007ace;
+  fill: #007ace;
+  font-size: 2rem;
+}
+
+.container > span:first-child > span {
+  margin: unset;
+}
+
+.container > span:nth-child(2) {
+  flex: auto;
+}
+
+.container > span:last-child {
+  fill: #c4cdd5;
+}
+
+.container:not(:last-child) {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+.clickable {
+  cursor: pointer;
+}
