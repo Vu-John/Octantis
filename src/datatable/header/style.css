@@ -1,0 +1,43 @@
+.check {
+  color: #007ace !important;
+}
+
+.uncheck {
+  color: #c4cdd5 !important;
+}
+
+.uncheck:hover {
+  color: #007ace !important;
+}
+
+.header th>span {
+  width: max-content;
+}
+
+.header th:first-child {
+  width: 30px;
+}
+
+.header th:first-child label {
+  cursor: pointer;
+}
+
+.header tr {
+  height: 48px !important;
+}
+
+.sortableHeader {
+  cursor: pointer;
+  display: flex;
+}
+
+.sortableHeader > span:last-of-type {
+  margin-left: 5px;
+  height: 1.4rem;
+  width: 1.4rem;
+  margin-top: 4px;
+}
+
+.sortableHeader:hover {
+  color: #212b36;
+}
