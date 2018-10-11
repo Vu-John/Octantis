@@ -1,0 +1,39 @@
+.container {
+    height: 64px;
+    background-color: #1e3d58;
+    z-index: 100;
+    width: 100%;
+    position: sticky;
+    top: 0
+}
+
+.container img {
+    height: 35px;
+}
+
+.logoWrapper {
+    width: 240px;
+    background-color: #183046;
+    padding: 13px 20px;
+    display: block;
+    height: 64px;
+}
+
+.iconWrapper {
+    display: none;
+    padding: 20px 15px;
+    color: #f4f6f8;
+    width: 60px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 992px) {
+    .iconWrapper {
+        display: block;
+    }
+
+    .logoWrapper {
+        display: none;
+    }
+}
