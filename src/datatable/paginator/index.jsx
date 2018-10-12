@@ -40,6 +40,24 @@ const TablePaginator = (props) => {
     captionTo = totalRecords;
   }
 
+  /*
+    helper method is added to prevent unnecessary warning in select
+    when a function (from props) is directly passed to OnChange of select
+    ref: https://github.com/facebook/react/issues/1118
+  */
+  const _onPageChange = (page) => {
+    onPageChange(page);
+  }
+
+  /*
+    helper method is added to prevent unnecessary warning in select
+    when a function (from props) is directly passed to OnChange of select
+    ref: https://github.com/facebook/react/issues/1118
+  */
+  const _onRowChange = (row) => {
+    onRowChange(row);
+  }
+
   const onPreviousPage = () => {
     onPageChange(currentPage - 1)
   }
@@ -54,13 +72,13 @@ const TablePaginator = (props) => {
         <Select
           label="Page"
           options={pageOptions}
-          onChange={onPageChange}
+          onChange={_onPageChange}
           value={currentPage}
         />
         <Select
           label="Rows per page"
           options={rowsPerPageOptions}
-          onChange={onRowChange}
+          onChange={_onRowChange}
           value={rowsPerPage}
         />
       </div>

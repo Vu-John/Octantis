@@ -57412,6 +57412,14 @@ var TablePaginator = function TablePaginator(props) {
     captionTo = totalRecords;
   }
 
+  var _onPageChange = function _onPageChange(page) {
+    onPageChange(page);
+  };
+
+  var _onRowChange = function _onRowChange(row) {
+    onRowChange(row);
+  };
+
   var onPreviousPage = function onPreviousPage() {
     onPageChange(currentPage - 1);
   };
@@ -57429,13 +57437,13 @@ var TablePaginator = function TablePaginator(props) {
       React.createElement(_polaris.Select, {
         label: 'Page',
         options: pageOptions,
-        onChange: onPageChange,
+        onChange: _onPageChange,
         value: currentPage
       }),
       React.createElement(_polaris.Select, {
         label: 'Rows per page',
         options: rowsPerPageOptions,
-        onChange: onRowChange,
+        onChange: _onRowChange,
         value: rowsPerPage
       })
     ),
@@ -59324,7 +59332,7 @@ exports = module.exports = __webpack_require__(47)(false);
 
 
 // module
-exports.push([module.i, "._27ezovkTTwZhN5WUKJexkc {\n  color: #007ace !important;\n}\n\n._1fYlE-fArT3r5sCSkwDWhG {\n  color: #c4cdd5 !important;\n}\n\n._1fYlE-fArT3r5sCSkwDWhG:hover {\n  color: #007ace !important;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th>span {\n  width: max-content;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th:first-child {\n  width: 30px;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th:first-child label {\n  cursor: pointer;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p tr {\n  height: 48px !important;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3 {\n  cursor: pointer;\n  display: flex;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3 > span:last-of-type {\n  margin-left: 5px;\n  height: 1.4rem;\n  width: 1.4rem;\n  margin-top: 4px;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3:hover {\n  color: #212b36;\n}", ""]);
+exports.push([module.i, "._27ezovkTTwZhN5WUKJexkc {\n  color: #007ace !important;\n}\n\n._1fYlE-fArT3r5sCSkwDWhG {\n  color: #c4cdd5 !important;\n}\n\n._1fYlE-fArT3r5sCSkwDWhG:hover {\n  color: #007ace !important;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th>span {\n  width: max-content;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th:first-child {\n  width: 30px;\n  padding-left: 15px;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p th:first-child label {\n  cursor: pointer;\n}\n\n._1fVM2qSGLbKs_GJHU0Gf2p tr {\n  height: 48px !important;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3 {\n  cursor: pointer;\n  display: flex;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3 > span:last-of-type {\n  margin-left: 5px;\n  height: 1.4rem;\n  width: 1.4rem;\n  margin-top: 4px;\n}\n\n._2t_b3DdZTuwyHm16wjDoT3:hover {\n  color: #212b36;\n}", ""]);
 
 // exports
 exports.locals = {
@@ -59343,7 +59351,7 @@ exports = module.exports = __webpack_require__(47)(false);
 
 
 // module
-exports.push([module.i, ".zo9peSIzEjp35U-tYxMpd {\n  width: 100%;\n  display: inline-flex;\n  padding: 12px;\n  background: #f9fafb;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 {\n  width: 60%;\n}\n\n._23WgYICRuJizExqMd9qNw5 {\n  color: #919Eab;\n  font-size: 14px;\n  margin-right: 20px;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 > div {\n  display: inline-flex;\n  margin-right: 20px;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select {\n  cursor: pointer;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select option:hover {\n  cursor: pointer;\n  background: #cecece;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select option:focus {\n  outline: unset !important;\n  cursor: pointer;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 label {\n  padding-top: 7px;\n  padding-right: 15px;\n}\n\n._33z55c0bfkFv9U4SMwIsb_ {\n  text-align: right;\n  width: 40%;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 > div > div:nth-of-type(2) > div:first-of-type > span:first-of-type {\n  display: none;\n}\n\noption {\n  cursor: pointer;\n}\n\noption:checked {\n  background-color: #cecece;\n  color: #ffffff;\n}\n\nselect:focus {\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, ".zo9peSIzEjp35U-tYxMpd {\n  width: 100%;\n  display: inline-flex;\n  padding: 12px;\n  background: #f9fafb;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 {\n  width: 60%;\n}\n\n._23WgYICRuJizExqMd9qNw5 {\n  color: #919Eab;\n  font-size: 14px;\n  margin-right: 20px;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 > div {\n  display: inline-flex;\n  margin-right: 20px;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select {\n  cursor: pointer;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select option:hover {\n  cursor: pointer;\n  background: #cecece;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 select option:focus {\n  outline: unset !important;\n  cursor: pointer;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 label {\n  padding-top: 7px;\n  padding-right: 15px;\n}\n\n._33z55c0bfkFv9U4SMwIsb_ {\n  text-align: right;\n  width: 40%;\n}\n\n._1yfy8Xg57LG-JJ31s1zs_9 > div > div:nth-of-type(2) > div:first-of-type > span:first-of-type {\n  display: none;\n}\n\noption {\n  cursor: pointer;\n}\n\noption:checked {\n  background-color: #cecece;\n  color: #ffffff;\n}\n\nselect:focus {\n  cursor: pointer;\n}\n\nselect {\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  text-indent: 1px;\n  text-overflow: '';\n}", ""]);
 
 // exports
 exports.locals = {
