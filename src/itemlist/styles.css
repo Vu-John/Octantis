@@ -1,0 +1,127 @@
+.navContent {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.title {
+  width: 100%;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #637381;
+  display: flex;
+  margin: 8px 0px;
+}
+
+.title > span:first-child {
+  flex: auto;
+}
+
+.title > span:last-child {
+  height: 16px;
+  width: 16px;
+  fill: #919eab;
+  cursor: pointer;
+  font-size: 1.6rem;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  color: #212b36;
+  fill: #919eab;
+  cursor: pointer;
+}
+
+.content:hover {
+  color: #000;
+  fill: #637381;
+}
+
+.content > span:first-child {
+  color: #919eab;
+}
+
+.content:hover > span:first-child {
+  color: #637381;
+}
+
+.content > span:first-child, .contentActive > span:first-child  {
+  width: 20px;
+  height: 20px;
+  font-size: 1.8rem;
+}
+
+.content > span:nth-child(2), .contentActive > span:nth-child(2), .contentChildActive > span:nth-child(2)  {
+  flex: auto;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+.content > span:last-child, .contentActive > span:last-child, .contentChildActive > span:last-child {
+  width: 14px;
+  height: 14px;
+  font-size: 1.4rem;
+}
+
+.contentActive {
+  display: flex;
+  flex-direction: row;
+  color: #007ace;
+  fill: #007ace;
+  cursor: pointer;
+}
+
+.count {
+  background-color: #47c1bf;
+  height: unset !important;
+  width: unset !important;
+  color: #fff;
+  padding: 0rem 0.5rem;
+  border-radius: 0.8rem;
+  text-align: left;
+  font-size: 1.2rem !important;
+  margin-bottom: 3px;
+  line-height: 1.6rem;
+  padding-top: 0.1rem;
+}
+
+.childContent {
+  font-size: 1.4rem;
+  color: #637381;
+  width: 100%;
+  margin: 3px 0px 6px 30px;
+  cursor: pointer;
+}
+
+.childContent:hover {
+  color: #007ace;
+}
+
+.childContentActive {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #007ace;
+  width: 100%;
+  margin: 3px 0px 6px 30px;
+  cursor: pointer;
+}
+
+.contentChildActive {
+  display: flex;
+  cursor: pointer;
+}
+
+.contentChildActive > span:first-child {
+  fill: #007ace;
+  color: #007ace;
+  width: 20px;
+  height: 20px;
+  font-size: 1.8rem;
+}
+
+.bottomContent {
+  position: absolute;
+  bottom: 10vh;
+  width: 85%;
+}

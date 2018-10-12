@@ -1,0 +1,8 @@
+.wrapper {
+  width: 240px;
+  background-color: #f4f6f8;
+  height: 100vh;
+  padding: 20px;
+  border-right: 1px solid #dfe3e8;
+  position: fixed;
+}
