@@ -1,0 +1,62 @@
+.paginator {
+  width: 100%;
+  display: inline-flex;
+  padding: 12px;
+  background: #f9fafb;
+}
+
+.options {
+  width: 60%;
+}
+
+.caption {
+  color: #919Eab;
+  font-size: 14px;
+  margin-right: 20px;
+}
+
+.options > div {
+  display: inline-flex;
+  margin-right: 20px;
+}
+
+.options select {
+  cursor: pointer;
+}
+
+.options select option:hover {
+  cursor: pointer;
+  background: #cecece;
+}
+
+.options select option:focus {
+  outline: unset !important;
+  cursor: pointer;
+}
+
+.options label {
+  padding-top: 7px;
+  padding-right: 15px;
+}
+
+.navigator {
+  text-align: right;
+  width: 40%;
+}
+
+.options > div > div:nth-of-type(2) > div:first-of-type > span:first-of-type {
+  display: none;
+}
+
+option {
+  cursor: pointer;
+}
+
+option:checked {
+  background-color: #cecece;
+  color: #ffffff;
+}
+
+select:focus {
+  cursor: pointer;
+}

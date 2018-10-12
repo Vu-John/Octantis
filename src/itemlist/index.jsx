@@ -87,7 +87,7 @@ const ItemList = (props) => {
   const titleMarkup = itemsList.title ?
     (
       <div className={styles.title}>
-        <span>{itemsList.title}</span>
+        <div>{itemsList.title}</div>
         {
           itemsList.icon ?
             <Icon source={itemsList.icon} onClick={itemsList.onIconClick} /> : null
