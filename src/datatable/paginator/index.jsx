@@ -36,7 +36,7 @@ const TablePaginator = (props) => {
 
   const captionFrom = ((currentPage - 1) * rowsPerPage) + 1;
   let captionTo = currentPage * rowsPerPage;
-  if (totalRecords > captionTo) {
+  if (totalRecords < captionTo) {
     captionTo = totalRecords;
   }
 

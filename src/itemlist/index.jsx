@@ -37,7 +37,7 @@ const Item = ({ item }) => {
 
   return (
     <div className={contentClass} onClick={_onClick}>
-      <Icon source={item.icon} />
+      <Icon type={itemsList.iconType} source={item.icon} />
       <span>{item.content}</span>
       {suffixMarkup}
     </div>
@@ -75,7 +75,7 @@ const SecondaryIcon = ({ item }) => {
   }
 
   return item.secondaryIcon ?
-    <Icon source={item.secondaryIcon} onClick={_onClick} /> : null;
+    <Icon type={itemsList.iconType} source={item.secondaryIcon} onClick={_onClick} /> : null;
 }
 
 const ItemList = (props) => {
@@ -90,7 +90,7 @@ const ItemList = (props) => {
         <div>{itemsList.title}</div>
         {
           itemsList.icon ?
-            <Icon source={itemsList.icon} onClick={itemsList.onIconClick} /> : null
+            <Icon type={itemsList.iconType} source={itemsList.icon} onClick={itemsList.onIconClick} /> : null
         }
       </div>
     ) : null;
