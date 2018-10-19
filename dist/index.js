@@ -57535,7 +57535,7 @@ var Item = function Item(_ref) {
   return _react2.default.createElement(
     'div',
     { className: contentClass, onClick: _onClick },
-    _react2.default.createElement(_index2.default, { type: itemsList.iconType, source: item.icon }),
+    _react2.default.createElement(_index2.default, { type: item.iconType, source: item.icon }),
     _react2.default.createElement(
       'span',
       null,
