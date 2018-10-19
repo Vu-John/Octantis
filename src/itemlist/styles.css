@@ -31,6 +31,7 @@
   color: #212b36;
   fill: #919eab;
   cursor: pointer;
+  margin: 10px 0px;
 }
 
 .content:hover {
@@ -54,14 +55,12 @@
 
 .content > span:nth-child(2), .contentActive > span:nth-child(2), .contentChildActive > span:nth-child(2)  {
   flex: auto;
-  font-weight: 700;
   margin-left: 10px;
 }
 
 .content > span:last-child, .contentActive > span:last-child, .contentChildActive > span:last-child {
   width: 14px;
   height: 14px;
-  font-size: 1.4rem;
 }
 
 .contentActive {
@@ -70,6 +69,7 @@
   color: #007ace;
   fill: #007ace;
   cursor: pointer;
+  margin: 10px 0px;
 }
 
 .count {
@@ -100,7 +100,6 @@
 
 .childContentActive {
   font-size: 1.4rem;
-  font-weight: 600;
   color: #007ace;
   width: 100%;
   margin: 3px 0px 6px 30px;
