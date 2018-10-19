@@ -37,7 +37,7 @@ const Item = ({ item }) => {
 
   return (
     <div className={contentClass} onClick={_onClick}>
-      <Icon type={itemsList.iconType} source={item.icon} />
+      <Icon type={item.iconType} source={item.icon} />
       <span>{item.content}</span>
       {suffixMarkup}
     </div>
