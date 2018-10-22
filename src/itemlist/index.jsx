@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Collapsible } from '@shopify/polaris';
+import { NavLink } from 'react-router-dom';
 
 import Icon from '../icon/index.jsx';
 import * as styles from './styles.css';
@@ -13,34 +14,12 @@ const Item = ({ item }) => {
       <SecondaryIcon item={item} />
   );
 
-  const _onClick = () => {
-    if (item.children) {
-      item.children[0].onAction(item.children[0]);
-    }
-    else {
-      item.onAction(item);
-    }
-  }
-
-  let contentClass;
-
-  if (item.children &&
-    item.children.find(el => el.active)) {
-    contentClass = styles.contentChildActive;
-  }
-  else if (item.active) {
-    contentClass = styles.contentActive;
-  }
-  else {
-    contentClass = styles.content;
-  }
-
   return (
-    <div className={contentClass} onClick={_onClick}>
-      <Icon type={item.iconType} source={item.icon} />
+    <NavLink to={item.route} className={styles.content} activeClassName={styles.contentActive}>
+      <Icon source={item.icon} type={item.iconType} />
       <span>{item.content}</span>
       {suffixMarkup}
-    </div>
+    </NavLink>
   )
 }
 
@@ -50,17 +29,11 @@ const ChildItems = ({ item }) => {
     <Collapsible open={item.active} id={item.content}>
       {
         item.children.map(childItem => {
-
-          let _onClick = () => {
-            childItem.onAction(childItem);
-          }
-
           return (
-            <div key={childItem.content}
-              className={childItem.active ? styles.childContentActive : styles.childContent}
-              onClick={_onClick}>
+            <NavLink to={childItem.route} key={childItem.content}
+              className={styles.childContent} activeClassName={styles.childContentActive}>
               <span>{childItem.content}</span>
-            </div>
+            </NavLink>
           )
         })
       }

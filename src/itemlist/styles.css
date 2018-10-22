@@ -31,7 +31,8 @@
   color: #212b36;
   fill: #919eab;
   cursor: pointer;
-  margin: 10px 0px;
+  margin: 5px 0px;
+  text-decoration: none;
 }
 
 .content:hover {
