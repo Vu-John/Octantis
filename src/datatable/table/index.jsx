@@ -25,8 +25,7 @@ const themeStyles = theme => ({
     minWidth: 1020,
   },
   tableWrapper: {
-    overflowX: 'auto',
-    minHeight: 555
+    overflowX: 'auto'
   },
   tableCell: {
     fontSize: 'inherit',
