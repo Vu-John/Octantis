@@ -16,6 +16,7 @@
 
 .header th:first-child {
   width: 30px;
+  padding-left: 15px;
 }
 
 .header th:first-child label {
