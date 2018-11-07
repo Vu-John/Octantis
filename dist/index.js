@@ -30854,7 +30854,8 @@ var themeStyles = function themeStyles(theme) {
       minWidth: 1020
     },
     tableWrapper: {
-      overflowX: 'auto'
+      overflowX: 'auto',
+      minHeight: 555
     },
     tableCell: {
       fontSize: 'inherit',
@@ -30879,7 +30880,6 @@ var renderRows = function renderRows(rowData, columns, onRowClick, onSelectRecor
   var _onSelectRow = function _onSelectRow(checked) {
     onSelectRecord(checked, rowData);
   };
-
   return _react2.default.createElement(
     _core.TableRow,
     {
@@ -30902,17 +30902,17 @@ var renderRows = function renderRows(rowData, columns, onRowClick, onSelectRecor
       )
     ) : null,
     columns && columns.map(function (column) {
-      return renderCell(rowData[column.key], classes);
+      return renderCell(rowData, column, classes);
     })
   );
 };
 
-var renderCell = function renderCell(cellData, classes) {
+var renderCell = function renderCell(rowData, column, classes) {
 
   return _react2.default.createElement(
     _core.TableCell,
-    { key: cellData, classes: { body: classes.tableCell } },
-    cellData
+    { key: column.key, classes: { body: classes.tableCell } },
+    rowData[column.key]
   );
 };
 
@@ -30954,15 +30954,20 @@ var TableData = function TableData(props) {
           orderBy: orderBy,
           columns: columns
         }) : null,
-        _react2.default.createElement(
+        records && records.length ? _react2.default.createElement(
           _core.TableBody,
           null,
-          records && records.map(function (rowData) {
+          records.map(function (rowData) {
             rowData.isSelected = selectedRecords && selectedRecords.indexOf(rowData.id) !== -1;
 
             return renderRows(rowData, columns, onRowClick, onSelectRecord, onSelectAll, classes);
           })
-        )
+        ) : null
+      ),
+      records && records.length ? null : _react2.default.createElement(
+        'div',
+        { className: styles.noRecords },
+        'No Records Found'
       )
     ),
     _react2.default.createElement(_index4.default, {
@@ -58831,10 +58836,20 @@ var TablePaginator = function TablePaginator(props) {
     captionTo = totalRecords;
   }
 
+  /*
+    helper method is added to prevent unnecessary warning in select
+    when a function (from props) is directly passed to OnChange of select
+    ref: https://github.com/facebook/react/issues/1118
+  */
   var _onPageChange = function _onPageChange(page) {
     onPageChange(page);
   };
 
+  /*
+    helper method is added to prevent unnecessary warning in select
+    when a function (from props) is directly passed to OnChange of select
+    ref: https://github.com/facebook/react/issues/1118
+  */
   var _onRowChange = function _onRowChange(row) {
     onRowChange(row);
   };
@@ -60765,13 +60780,14 @@ exports = module.exports = __webpack_require__(48)(false);
 
 
 // module
-exports.push([module.i, ".pxVM7fTkult29F2Fcmljv td {\n  padding: 4px 2.5vw;\n  white-space: pre;\n}\n\n.pxVM7fTkult29F2Fcmljv td:nth-child(-n+2) {\n  padding: 5px;\n  width: 40px;\n}\n\n.pxVM7fTkult29F2Fcmljv td:first-child {\n  padding-left: 15px;\n}\n\n.pxVM7fTkult29F2Fcmljv td:first-child label {\n  cursor: pointer;\n}\n\n._2ZexCcjcC-_lv0kK7bJQTY {\n  background-color: #b3bcf519 !important;\n}\n\n.xuzlH8auCoZKx86lu21X0:hover {\n  background-color: #dfe3e84c !important;\n  box-shadow: inset 2px 0 0 0 #007ace;\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, ".pxVM7fTkult29F2Fcmljv td {\n  padding: 4px 2.5vw;\n  white-space: pre;\n}\n\n.pxVM7fTkult29F2Fcmljv td:nth-child(-n+2) {\n  padding: 5px;\n  width: 40px;\n}\n\n.pxVM7fTkult29F2Fcmljv td:first-child {\n  padding-left: 15px;\n}\n\n.pxVM7fTkult29F2Fcmljv td:first-child label {\n  cursor: pointer;\n}\n\n._2ZexCcjcC-_lv0kK7bJQTY {\n  background-color: #b3bcf519 !important;\n}\n\n.xuzlH8auCoZKx86lu21X0:hover {\n  background-color: #dfe3e84c !important;\n  box-shadow: inset 2px 0 0 0 #007ace;\n  cursor: pointer;\n}\n\n._2e8lLKZYdIXqmoRaU0jh-m {\n  text-align: center;\n  margin-top: 20px;\n}", ""]);
 
 // exports
 exports.locals = {
 	"row": "pxVM7fTkult29F2Fcmljv",
 	"rowselect": "_2ZexCcjcC-_lv0kK7bJQTY",
-	"rowhover": "xuzlH8auCoZKx86lu21X0"
+	"rowhover": "xuzlH8auCoZKx86lu21X0",
+	"noRecords": "_2e8lLKZYdIXqmoRaU0jh-m"
 };
 
 /***/ }),
@@ -97261,12 +97277,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datatable_table_index_jsx__ = __webpack_require__(343);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datatable_table_index_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__datatable_table_index_jsx__);
 /* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "DataTable", function() { return __WEBPACK_IMPORTED_MODULE_2__datatable_table_index_jsx___default.a; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__icon_index_jsx__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__icon_index_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__icon_index_jsx__);
-/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "Icon", function() { return __WEBPACK_IMPORTED_MODULE_3__icon_index_jsx___default.a; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__topnav_index_jsx__ = __webpack_require__(346);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__topnav_index_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__topnav_index_jsx__);
-/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "TopNav", function() { return __WEBPACK_IMPORTED_MODULE_4__topnav_index_jsx___default.a; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__topnav_index_jsx__ = __webpack_require__(346);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__topnav_index_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__topnav_index_jsx__);
+/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "TopNav", function() { return __WEBPACK_IMPORTED_MODULE_3__topnav_index_jsx___default.a; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__icon_index_jsx__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__icon_index_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__icon_index_jsx__);
+/* harmony reexport (default from non-hamory) */ __webpack_require__.d(__webpack_exports__, "Icon", function() { return __WEBPACK_IMPORTED_MODULE_4__icon_index_jsx___default.a; });
+
 
 
 

@@ -25,7 +25,8 @@ const themeStyles = theme => ({
     minWidth: 1020,
   },
   tableWrapper: {
-    overflowX: 'auto'
+    overflowX: 'auto',
+    minHeight: 555
   },
   tableCell: {
     fontSize: 'inherit',
@@ -51,7 +52,6 @@ const renderRows =
   const _onSelectRow = (checked) => {
     onSelectRecord(checked, rowData);
   }
-
   return (
     <TableRow
       classes={{ root: styles.row, selected: styles.rowselect, hover: styles.rowhover }}
@@ -73,18 +73,18 @@ const renderRows =
       }
       {
         columns && columns.map(column => {
-          return renderCell(rowData[column.key], classes)
+          return renderCell(rowData, column, classes)
         })
       }
     </TableRow>
   );
 }
 
-const renderCell = (cellData, classes) => {
+const renderCell = (rowData, column, classes) => {
 
   return (
-    <TableCell key={cellData} classes={{ body: classes.tableCell }}>
-      {cellData}
+    <TableCell key={column.key} classes={{ body: classes.tableCell }}>
+      {rowData[column.key]}
     </TableCell>
   )
 }
@@ -104,29 +104,39 @@ var TableData = (props) => {
   return (
     <Paper className={classes.root}>
       <div className={classes.tableWrapper}>
-        <Table className={classes.table} aria-labelledby="tableTitle">
-          {columns && columns.length ?
-            <TableHeader
-              selectAll={selectAll}
-              onSort={onSort}
-              onSelectAll={onSelectAll}
-              orderAs={orderAs}
-              orderBy={orderBy}
-              columns={columns}
-            /> : null}
-          <TableBody>
-            {
-              records && records
-                .map(rowData => {
-                  rowData.isSelected = selectedRecords &&
-                    selectedRecords.indexOf(rowData.id) !== -1;
-
-                  return renderRows(rowData, columns, onRowClick,
-                    onSelectRecord, onSelectAll, classes)
-                })
-            }
-          </TableBody>
-        </Table>
+          <Table className={classes.table} aria-labelledby="tableTitle">
+            {columns && columns.length ?
+              <TableHeader
+                selectAll={selectAll}
+                onSort={onSort}
+                onSelectAll={onSelectAll}
+                orderAs={orderAs}
+                orderBy={orderBy}
+                columns={columns}
+              /> : null}
+              {
+                records && records.length ?
+                <TableBody>
+                {
+                  records
+                    .map(rowData => {
+                      rowData.isSelected = selectedRecords &&
+                        selectedRecords.indexOf(rowData.id) !== -1;
+  
+                      return renderRows(rowData, columns, onRowClick,
+                        onSelectRecord, onSelectAll, classes)
+                    }) 
+                }
+              </TableBody> :
+              null
+              }
+          </Table>
+          {
+            records && records.length ? null :
+            <div className={styles.noRecords}>
+              No Records Found
+            </div>
+          }
       </div>
       <TablePaginator
         rowsPerPage={rowsPerPage}
