@@ -4003,56 +4003,7 @@ module.exports = function(module) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _polaris = __webpack_require__(92);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _styles = __webpack_require__(664);
-
-var _styles2 = _interopRequireDefault(_styles);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var shopifyIcon = function shopifyIcon(source, onClick) {
-  return _react2.default.createElement(
-    'span',
-    { onClick: onClick },
-    _react2.default.createElement(_polaris.Icon, { source: source })
-  );
-};
-
-var fontAwesomeIcon = function fontAwesomeIcon(source, onClick) {
-  return _react2.default.createElement('span', { className: source + ' ' + _styles2.default.customClass, onClick: onClick });
-};
-
-var Icon = function Icon(props) {
-  var type = props.type,
-      source = props.source,
-      onClick = props.onClick;
-
-
-  return type === 'fa' ? fontAwesomeIcon(source, onClick) : shopifyIcon(source, onClick);
-};
-
-Icon.propTypes = {
-  type: _propTypes2.default.string,
-  source: _propTypes2.default.string,
-  onClick: _propTypes2.default.func
-};
-
-exports.default = Icon;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _polaris=__webpack_require__(92);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _styles=__webpack_require__(664);var _styles2=_interopRequireDefault(_styles);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var shopifyIcon=function shopifyIcon(source,onClick){return _react2.default.createElement('span',{onClick:onClick},_react2.default.createElement(_polaris.Icon,{source:source}));};var fontAwesomeIcon=function fontAwesomeIcon(source,onClick){return _react2.default.createElement('span',{className:source+' '+_styles2.default.customClass,onClick:onClick});};var Icon=function Icon(props){var type=props.type,source=props.source,onClick=props.onClick;return type==='fa'?fontAwesomeIcon(source,onClick):shopifyIcon(source,onClick);};Icon.propTypes={type:_propTypes2.default.string,source:_propTypes2.default.string,onClick:_propTypes2.default.func};exports.default=Icon;
 
 /***/ }),
 /* 91 */
@@ -27613,342 +27564,28 @@ if (process.env.NODE_ENV === 'production') {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _polaris = __webpack_require__(92);
-
-var _lodash = __webpack_require__(600);
-
-var _ = _interopRequireWildcard(_lodash);
-
-var _styles = __webpack_require__(663);
-
-var styles = _interopRequireWildcard(_styles);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var FfDataTable = function FfDataTable(props) {
-  var rows = props.rows,
-      columns = props.columns,
-      onRowClick = props.onRowClick,
-      onSelectRow = props.onSelectRow,
-      selectedRows = props.selectedRows,
-      onSort = props.onSort,
-      trackSelectionBy = props.trackSelectionBy,
-      sortOrder = props.sortOrder;
-
-
-  var renderRows = function renderRows(rowData, rowIndex) {
-    var formattedRow = [];
-    var isSelected = _.find(selectedRows, function (index) {
-      return index === rowIndex;
-    }) >= 0;
-
-    _.forEach(rowData, function (rowElement, index) {
-      if (rowData.length - columns.length === 1 && index === trackByIndex) {
-        return;
-      } else {
-        formattedRow.push(_react2.default.createElement(
-          'span',
-          { key: index, onClick: function onClick() {
-              return onRowClick(rowIndex);
-            } },
-          rowElement
-        ));
-      }
-    });
-
-    formattedRow.unshift(_react2.default.createElement(_polaris.Checkbox, { checked: isSelected, onChange: function onChange() {
-        return onSelectRow(rowIndex);
-      } }));
-
-    return formattedRow;
-  };
-
-  var onColumnSort = function onColumnSort(index, direction) {
-    var column = columns[index - 1].key;
-    onSort(column, direction);
-  };
-
-  var trackByIndex = -1;
-  var columnContentTypes = [],
-      columnHeadings = [],
-      columnSortable = [],
-      formattedRows = [];
-  var isSelectAll = (selectedRows && selectedRows.length) === (rows && rows.length);
-
-  var sortedColumnIndex = _.findIndex(columns, function (col) {
-    return col.key === sortOrder.field;
-  });
-  var sortDirection = sortOrder.order;
-
-  _.each(columns, function (column) {
-    trackByIndex = trackByIndex < 0 && column.key === trackSelectionBy ? index : 0;
-    columnContentTypes.push(column.type);
-    columnHeadings.push(column.displayName);
-    columnSortable.push(column.sortable);
-  });
-
-  columnContentTypes.unshift('string');
-  columnSortable.unshift(false);
-  columnHeadings.unshift(_react2.default.createElement(_polaris.Checkbox, { checked: isSelectAll, onChange: props.onSelectAll }));
-
-  _.forEach(_.map(rows, function (row) {
-    return _.values(row);
-  }), function (row, index) {
-    formattedRows.push(renderRows(row, index));
-  });
-
-  return _react2.default.createElement(
-    _polaris.AppProvider,
-    null,
-    _react2.default.createElement(
-      _polaris.Card,
-      null,
-      _react2.default.createElement(_polaris.DataTable, {
-        columnContentTypes: columnContentTypes,
-        headings: columnHeadings,
-        sortable: columnSortable,
-        rows: formattedRows,
-        onSort: onColumnSort,
-        defaultSortDirection: sortDirection,
-        initialSortColumnIndex: sortedColumnIndex
-      }),
-      !rows.length ? _react2.default.createElement(
-        'div',
-        { className: styles.noRecords },
-        'No Records found'
-      ) : null
-    )
-  );
-};
-
-FfDataTable.propTypes = {
-  columns: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    displayName: _propTypes2.default.string,
-    key: _propTypes2.default.string,
-    sortable: _propTypes2.default.bool,
-    type: _propTypes2.default.string
-  })),
-  onSort: _propTypes2.default.func,
-  onSelectAll: _propTypes2.default.func,
-  rows: _propTypes2.default.arrayOf(_propTypes2.default.object),
-  selectedRows: _propTypes2.default.arrayOf(_propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.string])),
-  onSelectrow: _propTypes2.default.func,
-  onRowClick: _propTypes2.default.func,
-  trackSelectionBy: _propTypes2.default.string,
-  sortOrder: _propTypes2.default.shape({
-    field: _propTypes2.default.string,
-    order: _propTypes2.default.oneOf(['ascending', 'descending'])
-  })
-};
-
-exports.default = FfDataTable;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _polaris=__webpack_require__(92);var _lodash=__webpack_require__(600);var _=_interopRequireWildcard(_lodash);var _styles=__webpack_require__(663);var styles=_interopRequireWildcard(_styles);function _interopRequireWildcard(obj){if(obj&&obj.__esModule){return obj;}else{var newObj={};if(obj!=null){for(var key in obj){if(Object.prototype.hasOwnProperty.call(obj,key))newObj[key]=obj[key];}}newObj.default=obj;return newObj;}}function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var FfDataTable=function FfDataTable(props){var rows=props.rows,columns=props.columns,onRowClick=props.onRowClick,onSelectionChange=props.onSelectionChange,selectedRows=props.selectedRows,onSortChange=props.onSortChange,trackSelectionBy=props.trackSelectionBy,sortBy=props.sortBy;var renderRows=function renderRows(rowData,rowIndex){var formattedRow=[];var isSelected=_.find(selectedRows,function(index){return index===rowIndex;})>=0;formattedRow.push(_react2.default.createElement(_polaris.Checkbox,{checked:isSelected,onChange:function onChange(){return onSelectionChange(rowIndex);}}));_.forEach(rowData,function(value,key){if(key===trackSelectionBy){return;}else{formattedRow.push(_react2.default.createElement('div',{className:styles.cellElement,key:key,onClick:function onClick(){return onRowClick(rowIndex);}},value));}});return formattedRow;};var onColumnSort=function onColumnSort(index,direction){var column=columns[index-1].key;onSortChange(column,direction);};var columnContentTypes=[],columnHeadings=[],columnSortable=[],formattedRows=[];var isSelectAll=(selectedRows&&selectedRows.length)===(rows&&rows.length);var sortedColumnIndex=_.findIndex(columns,function(col){return col.key===sortBy.field;});var sortDirection=sortBy.order;columnContentTypes.push('string');columnSortable.push(false);columnHeadings.push(_react2.default.createElement(_polaris.Checkbox,{checked:isSelectAll,onChange:function onChange(){return props.onSelectionChange(rows.length+1);}}));_.each(columns,function(column){columnContentTypes.push(column.type);columnHeadings.push(column.displayName);columnSortable.push(column.sortable);});_.forEach(rows,function(row,index){formattedRows.push(renderRows(row,index));});return _react2.default.createElement(_polaris.AppProvider,null,_react2.default.createElement(_polaris.Card,null,_react2.default.createElement(_polaris.DataTable,{columnContentTypes:columnContentTypes,headings:columnHeadings,sortable:columnSortable,rows:formattedRows,onSort:onColumnSort,defaultSortDirection:sortDirection,initialSortColumnIndex:sortedColumnIndex}),!rows.length?_react2.default.createElement('div',{className:styles.noRecords},'No Records found'):null));};FfDataTable.defaultProps={trackSelectionBy:'id'};FfDataTable.propTypes={columns:_propTypes2.default.arrayOf(_propTypes2.default.shape({displayName:_propTypes2.default.string,key:_propTypes2.default.string,sortable:_propTypes2.default.bool,type:_propTypes2.default.string})),onSortChange:_propTypes2.default.func,rows:_propTypes2.default.arrayOf(_propTypes2.default.object),selectedRows:_propTypes2.default.arrayOf(_propTypes2.default.oneOfType([_propTypes2.default.number,_propTypes2.default.string])),onSelectionChange:_propTypes2.default.func,onRowClick:_propTypes2.default.func,trackSelectionBy:_propTypes2.default.string,sortBy:_propTypes2.default.shape({field:_propTypes2.default.string,order:_propTypes2.default.oneOf(['ascending','descending'])})};exports.default=FfDataTable;
 
 /***/ }),
 /* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _index = __webpack_require__(303);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _styles = __webpack_require__(666);
-
-var styles = _interopRequireWildcard(_styles);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Navigation = function Navigation(props) {
-  var actionItems = props.actionItems;
-
-
-  return _react2.default.createElement(
-    'div',
-    { className: styles.wrapper },
-    actionItems && actionItems.map(function (itemList, index) {
-      return _react2.default.createElement(_index2.default, { key: index, itemsList: itemList });
-    })
-  );
-};
-
-Navigation.propTypes = {
-  actionItems: _propTypes2.default.arrayOf(_propTypes2.default.object)
-};
-
-exports.default = Navigation;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _index=__webpack_require__(303);var _index2=_interopRequireDefault(_index);var _styles=__webpack_require__(666);var styles=_interopRequireWildcard(_styles);function _interopRequireWildcard(obj){if(obj&&obj.__esModule){return obj;}else{var newObj={};if(obj!=null){for(var key in obj){if(Object.prototype.hasOwnProperty.call(obj,key))newObj[key]=obj[key];}}newObj.default=obj;return newObj;}}function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Navigation=function Navigation(props){var actionItems=props.actionItems;return _react2.default.createElement('div',{className:styles.wrapper},actionItems&&actionItems.map(function(itemList,index){return _react2.default.createElement(_index2.default,{key:index,itemsList:itemList});}));};Navigation.propTypes={actionItems:_propTypes2.default.arrayOf(_propTypes2.default.object)};exports.default=Navigation;
 
 /***/ }),
 /* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _index = __webpack_require__(90);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _styles = __webpack_require__(667);
-
-var styles = _interopRequireWildcard(_styles);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var ListItem = function ListItem(_ref) {
-  var item = _ref.item;
-
-  var containerClasses = [styles.container];
-
-  if (item.onAction) {
-    containerClasses.push(styles.clickable);
-  }
-
-  return _react2.default.createElement(
-    'div',
-    { className: containerClasses.join(' '), onClick: item.onAction },
-    _react2.default.createElement(_index2.default, { source: item.icon, type: item.iconType }),
-    _react2.default.createElement(
-      'span',
-      null,
-      item.content
-    ),
-    item.onAction ? _react2.default.createElement(_index2.default, { source: 'chevronRight', type: 'shopify' }) : null
-  );
-};
-
-var SimpleResourceList = function SimpleResourceList(_ref2) {
-  var items = _ref2.items;
-
-
-  return _react2.default.createElement(
-    'div',
-    { className: styles.wrapper },
-    items.map(function (item, index) {
-      return _react2.default.createElement(ListItem, { key: index, item: item });
-    })
-  );
-};
-
-SimpleResourceList.propTypes = {
-  items: _propTypes2.default.arrayOf(_propTypes2.default.shape({
-    icon: _propTypes2.default.string,
-    iconType: _propTypes2.default.string,
-    content: _propTypes2.default.oneOfType([_propTypes2.default.string, _propTypes2.default.node]),
-    onAction: _propTypes2.default.func
-  }))
-};
-
-exports.default = SimpleResourceList;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _index=__webpack_require__(90);var _index2=_interopRequireDefault(_index);var _styles=__webpack_require__(667);var styles=_interopRequireWildcard(_styles);function _interopRequireWildcard(obj){if(obj&&obj.__esModule){return obj;}else{var newObj={};if(obj!=null){for(var key in obj){if(Object.prototype.hasOwnProperty.call(obj,key))newObj[key]=obj[key];}}newObj.default=obj;return newObj;}}function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var ListItem=function ListItem(_ref){var item=_ref.item;var containerClasses=[styles.container];if(item.onAction){containerClasses.push(styles.clickable);}return _react2.default.createElement('div',{className:containerClasses.join(' '),onClick:item.onAction},_react2.default.createElement(_index2.default,{source:item.icon,type:item.iconType}),_react2.default.createElement('span',null,item.content),item.onAction?_react2.default.createElement(_index2.default,{source:'chevronRight',type:'shopify'}):null);};var SimpleResourceList=function SimpleResourceList(_ref2){var items=_ref2.items;return _react2.default.createElement('div',{className:styles.wrapper},items.map(function(item,index){return _react2.default.createElement(ListItem,{key:index,item:item});}));};SimpleResourceList.propTypes={items:_propTypes2.default.arrayOf(_propTypes2.default.shape({icon:_propTypes2.default.string,iconType:_propTypes2.default.string,content:_propTypes2.default.oneOfType([_propTypes2.default.string,_propTypes2.default.node]),onAction:_propTypes2.default.func}))};exports.default=SimpleResourceList;
 
 /***/ }),
 /* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _Hidden = __webpack_require__(259);
-
-var _Hidden2 = _interopRequireDefault(_Hidden);
-
-var _styles = __webpack_require__(668);
-
-var _styles2 = _interopRequireDefault(_styles);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TopNav = function TopNav(props) {
-    var logo = props.logo,
-        content = props.content,
-        onIconClick = props.onIconClick;
-
-
-    return _react2.default.createElement(
-        'div',
-        { className: _styles2.default.container },
-        _react2.default.createElement(
-            'div',
-            { className: _styles2.default.iconWrapper, onClick: onIconClick },
-            _react2.default.createElement('i', { className: 'fa fa-bars' })
-        ),
-        _react2.default.createElement(
-            'div',
-            { className: _styles2.default.logoWrapper },
-            _react2.default.createElement('img', { src: logo })
-        ),
-        _react2.default.createElement(
-            'div',
-            { className: _styles2.default.content },
-            content
-        )
-    );
-};
-
-TopNav.propTypes = {
-    logo: _propTypes2.default.string,
-    content: _propTypes2.default.node,
-    onIconClick: _propTypes2.default.func
-};
-
-exports.default = TopNav;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _Hidden=__webpack_require__(259);var _Hidden2=_interopRequireDefault(_Hidden);var _styles=__webpack_require__(668);var _styles2=_interopRequireDefault(_styles);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var TopNav=function TopNav(props){var logo=props.logo,content=props.content,onIconClick=props.onIconClick;return _react2.default.createElement('div',{className:_styles2.default.container},_react2.default.createElement('div',{className:_styles2.default.iconWrapper,onClick:onIconClick},_react2.default.createElement('i',{className:'fa fa-bars'})),_react2.default.createElement('div',{className:_styles2.default.logoWrapper},_react2.default.createElement('img',{src:logo})),_react2.default.createElement('div',{className:_styles2.default.content},content));};TopNav.propTypes={logo:_propTypes2.default.string,content:_propTypes2.default.node,onIconClick:_propTypes2.default.func};exports.default=TopNav;
 
 /***/ }),
 /* 252 */
@@ -31385,132 +31022,7 @@ __export(__webpack_require__(155));
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _propTypes = __webpack_require__(2);
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _polaris = __webpack_require__(92);
-
-var _reactRouterDom = __webpack_require__(643);
-
-var _index = __webpack_require__(90);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _styles = __webpack_require__(665);
-
-var styles = _interopRequireWildcard(_styles);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Item = function Item(_ref) {
-  var item = _ref.item;
-
-
-  var suffixMarkup = item.count ? _react2.default.createElement(
-    'span',
-    { className: styles.count },
-    item.count
-  ) : _react2.default.createElement(SecondaryIcon, { item: item });
-
-  return _react2.default.createElement(
-    _reactRouterDom.NavLink,
-    { to: item.route, className: styles.content, activeClassName: styles.contentActive },
-    _react2.default.createElement(_index2.default, { source: item.icon, type: item.iconType }),
-    _react2.default.createElement(
-      'span',
-      null,
-      item.content
-    ),
-    suffixMarkup
-  );
-};
-
-var ChildItems = function ChildItems(_ref2) {
-  var item = _ref2.item;
-
-
-  return _react2.default.createElement(
-    _polaris.Collapsible,
-    { open: item.active, id: item.content },
-    item.children.map(function (childItem) {
-      return _react2.default.createElement(
-        _reactRouterDom.NavLink,
-        { to: childItem.route, key: childItem.content,
-          className: styles.childContent, activeClassName: styles.childContentActive },
-        _react2.default.createElement(
-          'span',
-          null,
-          childItem.content
-        )
-      );
-    })
-  );
-};
-
-var SecondaryIcon = function SecondaryIcon(_ref3) {
-  var item = _ref3.item;
-
-  var _onClick = function _onClick(event) {
-    event.stopPropagation();
-    item.secondaryAction();
-  };
-
-  return item.secondaryIcon ? _react2.default.createElement(_index2.default, { type: itemsList.iconType, source: item.secondaryIcon, onClick: _onClick }) : null;
-};
-
-var ItemList = function ItemList(props) {
-  var itemsList = props.itemsList;
-
-
-  var NavmenuItems = itemsList.items;
-
-  var titleMarkup = itemsList.title ? _react2.default.createElement(
-    'div',
-    { className: styles.title },
-    _react2.default.createElement(
-      'div',
-      null,
-      itemsList.title
-    ),
-    itemsList.icon ? _react2.default.createElement(_index2.default, { type: itemsList.iconType, source: itemsList.icon, onClick: itemsList.onIconClick }) : null
-  ) : null;
-
-  var contentMarkup = NavmenuItems.map(function (item) {
-
-    return _react2.default.createElement(
-      'div',
-      { key: item.content },
-      _react2.default.createElement(Item, { item: item }),
-      item.children && item.children.length ? _react2.default.createElement(ChildItems, { item: item }) : null
-    );
-  });
-
-  return _react2.default.createElement(
-    'div',
-    { className: itemsList.bottom ? styles.bottomContent : styles.navContent },
-    titleMarkup,
-    contentMarkup
-  );
-};
-
-ItemList.propTypes = {
-  itemsList: _propTypes2.default.object
-};
-
-exports.default = ItemList;
+Object.defineProperty(exports,"__esModule",{value:true});var _react=__webpack_require__(4);var _react2=_interopRequireDefault(_react);var _propTypes=__webpack_require__(2);var _propTypes2=_interopRequireDefault(_propTypes);var _polaris=__webpack_require__(92);var _reactRouterDom=__webpack_require__(643);var _index=__webpack_require__(90);var _index2=_interopRequireDefault(_index);var _styles=__webpack_require__(665);var styles=_interopRequireWildcard(_styles);function _interopRequireWildcard(obj){if(obj&&obj.__esModule){return obj;}else{var newObj={};if(obj!=null){for(var key in obj){if(Object.prototype.hasOwnProperty.call(obj,key))newObj[key]=obj[key];}}newObj.default=obj;return newObj;}}function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Item=function Item(_ref){var item=_ref.item;var suffixMarkup=item.count?_react2.default.createElement('span',{className:styles.count},item.count):_react2.default.createElement(SecondaryIcon,{item:item});return _react2.default.createElement(_reactRouterDom.NavLink,{to:item.route,className:styles.content,activeClassName:styles.contentActive},_react2.default.createElement(_index2.default,{source:item.icon,type:item.iconType}),_react2.default.createElement('span',null,item.content),suffixMarkup);};var ChildItems=function ChildItems(_ref2){var item=_ref2.item;return _react2.default.createElement(_polaris.Collapsible,{open:item.active,id:item.content},item.children.map(function(childItem){return _react2.default.createElement(_reactRouterDom.NavLink,{to:childItem.route,key:childItem.content,className:styles.childContent,activeClassName:styles.childContentActive},_react2.default.createElement('span',null,childItem.content));}));};var SecondaryIcon=function SecondaryIcon(_ref3){var item=_ref3.item;var _onClick=function _onClick(event){event.stopPropagation();item.secondaryAction();};return item.secondaryIcon?_react2.default.createElement(_index2.default,{type:itemsList.iconType,source:item.secondaryIcon,onClick:_onClick}):null;};var ItemList=function ItemList(props){var itemsList=props.itemsList;var NavmenuItems=itemsList.items;var titleMarkup=itemsList.title?_react2.default.createElement('div',{className:styles.title},_react2.default.createElement('div',null,itemsList.title),itemsList.icon?_react2.default.createElement(_index2.default,{type:itemsList.iconType,source:itemsList.icon,onClick:itemsList.onIconClick}):null):null;var contentMarkup=NavmenuItems.map(function(item){return _react2.default.createElement('div',{key:item.content},_react2.default.createElement(Item,{item:item}),item.children&&item.children.length?_react2.default.createElement(ChildItems,{item:item}):null);});return _react2.default.createElement('div',{className:itemsList.bottom?styles.bottomContent:styles.navContent},titleMarkup,contentMarkup);};ItemList.propTypes={itemsList:_propTypes2.default.object};exports.default=ItemList;
 
 /***/ }),
 /* 304 */
@@ -33855,11 +33367,12 @@ exports = module.exports = __webpack_require__(28)(false);
 
 
 // module
-exports.push([module.i, "tbody tr:hover th {\n  box-shadow: inset 2px 0 0 0 #007ace;\n  cursor: pointer;\n}\n\n._2e8lLKZYdIXqmoRaU0jh-m {\n  text-align: center;\n  margin-top: 20px;\n}", ""]);
+exports.push([module.i, "tbody tr:hover th {\n  box-shadow: inset 2px 0 0 0 #007ace;\n  cursor: pointer;\n}\n\ntd {\n  padding: 0px !important;\n}\n\n._2e8lLKZYdIXqmoRaU0jh-m {\n  text-align: center;\n  margin-top: 20px;\n}\n\n.Ih9LIH4NyKIzNvLi2xyFK {\n  padding: 1.6rem;\n}", ""]);
 
 // exports
 exports.locals = {
-	"noRecords": "_2e8lLKZYdIXqmoRaU0jh-m"
+	"noRecords": "_2e8lLKZYdIXqmoRaU0jh-m",
+	"cellElement": "Ih9LIH4NyKIzNvLi2xyFK"
 };
 
 /***/ }),

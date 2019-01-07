@@ -3,7 +3,15 @@ tbody tr:hover th {
   cursor: pointer;
 }
 
+td {
+  padding: 0px !important;
+}
+
 .noRecords {
   text-align: center;
   margin-top: 20px;
+}
+
+.cellElement {
+  padding: 1.6rem;
 }

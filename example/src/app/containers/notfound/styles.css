@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    align-items: center;
+    margin: 50px 200px;
+    height: 65vh;
+    flex-direction: column;
+    background: #f5f5f5;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    border: 1px solid #dfdfdf;
+    position: relative;
+    padding-top: 20vh;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.left {
+    font-size: 200px;
+    color: #6d7993;
+    text-shadow: 15px 2px 15px rgba(109, 121, 147, 0.5);
+    animation: slideInFromLeft 1.2s ease-out;
+}
+
+.right {
+  animation: slideInFromRight 1.2s ease-out;
+  color: #6d7993;
+}
+
+
+
