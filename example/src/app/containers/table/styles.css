@@ -1,3 +1,4 @@
-.title {
-  
+.tableContainer {
+  height: 250px;
+  overflow: auto;
 }
