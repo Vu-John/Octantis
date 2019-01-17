@@ -1,0 +1,11 @@
+.container {
+  padding: 30px;
+}
+
+.navIcon {
+  color: #212b36;
+  height: max-content;
+  position: absolute;
+  top: 8px;
+  font-size: 18px;
+}

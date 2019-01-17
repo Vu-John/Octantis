@@ -1,32 +1,25 @@
-.row td {
-  padding: 4px 2.5vw;
-  white-space: pre;
-}
-
-.row td:nth-child(-n+2) {
-  padding: 5px;
-  width: 40px;
-}
-
-.row td:first-child {
-  padding-left: 15px;
-}
-
-.row td:first-child label {
+tbody tr:hover th {
+  box-shadow: inset 2px 0 0 0 #007ace;
   cursor: pointer;
 }
 
-.rowselect {
-  background-color: #b3bcf519 !important;
+td {
+  cursor: pointer;
 }
 
-.rowhover:hover {
-  background-color: #dfe3e84c !important;
-  box-shadow: inset 2px 0 0 0 #007ace;
+th, th button {
+  font-weight: bold !important;
+}
+
+label {
   cursor: pointer;
 }
 
 .noRecords {
   text-align: center;
   margin-top: 20px;
+}
+
+.cellElement {
+  padding: 1.6rem;
 }

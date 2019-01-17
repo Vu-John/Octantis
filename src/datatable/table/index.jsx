@@ -1,210 +1,217 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core';
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableRow
-} from '@material-ui/core';
-import { Checkbox } from '@shopify/polaris';
 
-import TableHeader from '../header/index.jsx';
-import TablePaginator from '../paginator/index.jsx';
+import {Card, DataTable, Checkbox, AppProvider} from '@shopify/polaris';
+import { createUniqueIDFactory } from '../../../utils/idGenerator';
+import * as _ from 'lodash';
 
 import * as styles from './styles.css';
 
+const idGenerator = createUniqueIDFactory('table');
+const tableId = idGenerator();
 
-const themeStyles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 1020,
-  },
-  tableWrapper: {
-    overflowX: 'auto',
-    minHeight: 555
-  },
-  tableCell: {
-    fontSize: 'inherit',
-    whiteSpace: 'pre',
-    fontFamily: 'ubuntu',
-    padding: '4px 2.5vw',
-    cursor: 'pointer'
+
+class FfDataTable extends React.PureComponent {
+  constructor (props) {
+    super(props);
   }
-});
 
-const _onRowClick = (rowData, onRowClick, event) => {
-  onRowClick(event, rowData)
-}
-
-const stopEventPropogation = (event) => {
-  event.stopPropagation();
-}
-
-const renderRows =
- (rowData, columns, onRowClick,
-    onSelectRecord, onSelectAll, classes) => {
-
-  const _onSelectRow = (checked) => {
-    onSelectRecord(checked, rowData);
+  componentDidMount() {
+    setTimeout(() => {
+      this.configureObserver();
+    }, 0);
   }
-  return (
-    <TableRow
-      classes={{ root: styles.row, selected: styles.rowselect, hover: styles.rowhover }}
-      hover
-      onClick={_onRowClick.bind(this, rowData, onRowClick, event)}
-      role="checkbox"
-      aria-checked={rowData.isSelected}
-      tabIndex={-1}
-      key={rowData.id}
-      selected={rowData.isSelected}
-    >
-      {
-        onSelectAll ?
-          <TableCell padding="checkbox">
-            <span onClick={stopEventPropogation}>
-              <Checkbox checked={rowData.isSelected} onChange={_onSelectRow} />
-            </span>
-          </TableCell> : null
-      }
-      {
-        columns && columns.map(column => {
-          return renderCell(rowData, column, classes)
-        })
-      }
-    </TableRow>
-  );
-}
 
-const renderCell = (rowData, column, classes) => {
+  componentWillReceiveProps(nextProps) {
+    if(!_.isEqual(this.props.rows.length, (nextProps.rows && nextProps.rows.length))) {
+      this.configureObserver();
+    }
+  }
 
-  return (
-    <TableCell key={column.key} classes={{ body: classes.tableCell }}>
-      {rowData[column.key]}
-    </TableCell>
-  )
-}
+  configureObserver() {
+    const { loadMoreRecords, observerRowIndex } = this.props;
+    if (!loadMoreRecords) {
+      return;
+    }
 
-var TableData = (props) => {
+    const table = document.getElementById(tableId);
+    const rows = table.getElementsByTagName('tr') || [];
 
-  var {
-    classes, columns, records, onRowClick,
-    orderAs, orderBy, selectedRecords, onSelectRecord,
-    onSort, onSelectAll, rowsPerPage, rowsPerPageOptions,
-    onRowChange, currentPage, onPageChange,
-    totalRecords
-  } = props;
+    if(!rows[rows.length - observerRowIndex]) {
+      return;
+    }
 
-  const selectAll = (records && records.length) === (selectedRecords && selectedRecords.length);
+    if ('IntersectionObserver' in window) {
+      // IntersectionObserver Supported
+      let config = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.5
+      };
 
-  return (
-    <Paper className={classes.root}>
-      <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
-            {columns && columns.length ?
-              <TableHeader
-                selectAll={selectAll}
-                onSort={onSort}
-                onSelectAll={onSelectAll}
-                orderAs={orderAs}
-                orderBy={orderBy}
-                columns={columns}
-              /> : null}
-              {
-                records && records.length ?
-                <TableBody>
-                {
-                  records
-                    .map(rowData => {
-                      rowData.isSelected = selectedRecords &&
-                        selectedRecords.indexOf(rowData.id) !== -1;
-  
-                      return renderRows(rowData, columns, onRowClick,
-                        onSelectRecord, onSelectAll, classes)
-                    }) 
-                }
-              </TableBody> :
-              null
-              }
-          </Table>
-          {
-            records && records.length ? null :
-            <div className={styles.noRecords}>
-              No Records Found
-            </div>
+      let observer = new IntersectionObserver(onChange, config);
+      observer.observe(rows[rows.length - observerRowIndex]);
+
+      function onChange(changes, observer) {
+        _.forEach(changes, change => {
+          if (change.intersectionRatio > 0) {
+            loadMoreRecords();
+            observer.unobserve(change.target);
           }
-      </div>
-      <TablePaginator
-        rowsPerPage={rowsPerPage}
-        rowsPerPageOptions={rowsPerPageOptions}
-        onRowChange={onRowChange}
-        currentPage={currentPage}
-        onPageChange={onPageChange}
-        totalRecords={totalRecords}
-      />
-    </Paper>
-  );
+        });
+      }
+
+    } else {
+      // IntersectionObserver NOT Supported
+      loadMoreRecords();
+    }
+  }
+
+  renderRows = (rowData, rowIndex) => {
+    const { trackSelectionBy, selectedRows, columns } = this.props;
+    const formattedRow = [];
+
+    var isSelected = _.find(selectedRows, rowId => (rowData[trackSelectionBy] === rowId || rowIndex === rowId ));
+    formattedRow.push (<Checkbox checked={isSelected} onChange={() => this.onSelectRow(rowData[trackSelectionBy] || rowIndex)} />);
+
+    _.forEach(columns, column => {
+      if (column === trackSelectionBy) {
+        return;
+      } else {
+        formattedRow.push (<div className={styles.cellElement} key={column.key} onClick={() => this.props.onRowClick(rowData)}>{ rowData[column.key] }</div>);
+      }
+    });
+
+    return formattedRow;
+  }
+
+  onColumnSort = (index, direction) => {
+    const { columns } = this.props;
+
+    // index - 1 is done to ignore the header checkbox
+    const column = columns[index - 1].key;
+    this.props.onSortChange(column, direction);
+  }
+
+  onSelectRow = (rowId) => {
+    const { selectedRows } = this.props;
+    var newlySelectedRows;
+
+    if (rowId === 'all') {
+      newlySelectedRows = rowId;
+    }
+    else {
+      // xor will toggle the rowId in selected row array
+      newlySelectedRows = _.xor(selectedRows, [rowId])
+    }
+    this.props.onSelectionChange(newlySelectedRows);
+  }
+
+  render() {
+    const { rows, columns, sortBy, selectAllStatus } = this.props;
+
+    // Prepare props for polaris table
+    const columnContentTypes = [],
+      columnHeadings = [],
+      columnSortable = [],
+      formattedRows = [];
+
+    const sortedColumnIndex = _.findIndex(columns, col => col.key === sortBy.field);
+    const sortDirection = sortBy.order;
+
+    columnContentTypes.push('string');
+    columnSortable.push(false);
+
+    columnHeadings.push(<Checkbox checked={selectAllStatus} onChange={() => this.onSelectRow('all')} />);
+
+    _.each(columns, column => {
+      columnContentTypes.push(column.type);
+      columnHeadings.push(column.displayName);
+      columnSortable.push(column.sortable);
+    })
+
+    _.forEach(rows, (row, index) => {
+      formattedRows.push(this.renderRows(row, index));
+    });
+
+    return (
+      <AppProvider>
+        <Card>
+          <div id={tableId}>
+            <DataTable
+              columnContentTypes={columnContentTypes}
+              headings={columnHeadings}
+              sortable={columnSortable}
+              rows={formattedRows}
+              onSort={this.onColumnSort}
+              defaultSortDirection={sortDirection}
+              initialSortColumnIndex={sortedColumnIndex}
+            />
+            {
+              !rows.length ?
+                <div className={styles.noRecords}>
+                  No Records found
+              </div> : null
+            }
+          </div>
+        </Card>
+      </AppProvider>
+    );
+  }
 }
 
-TableData.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-TableData = withStyles(themeStyles)(TableData);
-
-function DataTable(props) {
-
-  // withStyles method adds its own props and that's why we are creating a wrapper to set our props
-  return <TableData {...props} />
+FfDataTable.defaultProps = {
+  trackSelectionBy: 'id',
+  observerRowIndex: 10
 }
 
-DataTable.propTypes = {
+FfDataTable.propTypes = {
   columns: PropTypes.arrayOf(
     PropTypes.shape({
-      hide: PropTypes.bool,
       displayName: PropTypes.string,
-      sortable: PropTypes.bool,
       key: PropTypes.string,
-      numeric: PropTypes.bool
+      sortable: PropTypes.bool,
+      type: PropTypes.string
     })
   ),
-  onSort: PropTypes.func,
-  /** Callback when selectall checkbox is clicked */
-  onSelectAll: PropTypes.func,
-  /** Variable to set type of sorting is done */
-  orderAs: PropTypes.oneOf(['asc', 'desc']),
-  /** Variable which describe the column by which sorting is done */
-  orderBy: PropTypes.string,
-  /** Row Data */
-  records: PropTypes.arrayOf(
+  onSortChange: PropTypes.func,
+  rows: PropTypes.arrayOf(
     PropTypes.object
   ),
-  /** List of ids of selected rows */
-  selectedRecords: PropTypes.arrayOf(
-    PropTypes.number
+  selectedRows: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.string
+    ])
   ),
-  /** Callback when a row is selected */
-  onSelectRecord: PropTypes.func,
-  /** Callback when a row is clicked */
+  onSelectionChange: PropTypes.func,
   onRowClick: PropTypes.func,
-  /** Variable which describe number of rows to be displayed */
-  rowsPerPage: PropTypes.number,
-  /** List for showing in rows per page dropdown */
-  rowsPerPageOptions: PropTypes.arrayOf(
-    PropTypes.number
-  ),
-  /** Callback when rows per page is changed */
-  onRowChange: PropTypes.func,
-  /** Variable which describe current page */
-  currentPage: PropTypes.number,
-  /** Callback when page is changed */
-  onPageChange: PropTypes.func,
-  /** Variable which describes total number of records present */
-  totalRecords: PropTypes.number
+
+  /**
+   * variable which will handle the row selection
+   * usualy it will be the unique id
+   */
+  trackSelectionBy: PropTypes.string,
+  sortBy: PropTypes.shape({
+    field: PropTypes.string,
+    order: PropTypes.oneOf(['ascending', 'descending'])
+  }),
+
+  selectAllStatus: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool
+  ]),
+
+  /**
+   * Index of row (from last) which will act as threshold
+   * to trigger loadMoreRecords
+   */
+  observerRowIndex: PropTypes.number,
+  /**
+   * This method will be triggerd when the
+   * threshold row is visible in viewport
+   */
+  loadMoreRecords: PropTypes.func
 };
 
-export default DataTable;
+export default FfDataTable;
