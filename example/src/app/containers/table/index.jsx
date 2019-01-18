@@ -16,9 +16,9 @@ class TableExample extends React.PureComponent {
     };
 
     this.columns = [
-      { displayName: 'Product', key: 'product', type: 'string', sortable: false },
-      { displayName: 'Status', key: 'status', type: 'string', sortable: false },
-      { displayName: 'Total', key: 'total', type: 'numeric', sortable: true }
+      { displayName: 'Product', field: 'product', type: 'string', sortable: false },
+      { displayName: 'Status', field: 'status', type: 'string', sortable: false },
+      { displayName: 'Total', field: 'total', type: 'numeric', sortable: true }
     ];
 
     this.records = [
