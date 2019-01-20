@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Card, DataTable, Checkbox, AppProvider} from '@shopify/polaris';
-import { createUniqueIDFactory } from '../../../utils/idGenerator';
+import {Card, DataTable, Checkbox, AppProvider, Spinner} from '@shopify/polaris';
 import * as _ from 'lodash';
 
 import * as styles from './styles.css';
 
-const idGenerator = createUniqueIDFactory('table');
-const tableId = idGenerator();
-
-
 class FfDataTable extends React.PureComponent {
   constructor (props) {
     super(props);
+    this.tableRef = React.createRef();
   }
 
   componentDidMount() {
@@ -22,20 +18,20 @@ class FfDataTable extends React.PureComponent {
     }, 0);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(!_.isEqual(this.props.rows.length, (nextProps.rows && nextProps.rows.length))) {
+  componentDidUpdate(prevProps) {
+    if(!_.isEqual((prevProps.rows && prevProps.rows.length), this.props.rows.length)) {
       this.configureObserver();
     }
   }
 
   configureObserver() {
-    const { loadMoreRecords, observerRowIndex } = this.props;
-    if (!loadMoreRecords) {
+    const { loadMoreRecords, observerRowIndex, loadingRecords } = this.props;
+
+    if (!loadMoreRecords || loadingRecords) {
       return;
     }
 
-    const table = document.getElementById(tableId);
-    const rows = table.getElementsByTagName('tr') || [];
+    const rows = this.tableRef.current.getElementsByTagName('tr') || [];
 
     if(!rows[rows.length - observerRowIndex]) {
       return;
@@ -68,17 +64,22 @@ class FfDataTable extends React.PureComponent {
   }
 
   renderRows = (rowData, rowIndex) => {
-    const { trackSelectionBy, selectedRows, columns } = this.props;
+    const { trackSelectionBy, selectedRows, columns, onSelectionChange } = this.props;
     const formattedRow = [];
 
-    var isSelected = _.find(selectedRows, rowId => (rowData[trackSelectionBy] === rowId || rowIndex === rowId ));
-    formattedRow.push (<Checkbox checked={isSelected} onChange={() => this.onSelectRow(rowData[trackSelectionBy] || rowIndex)} />);
+    if (onSelectionChange) {
+      var isSelected = _.find(selectedRows, rowId => (rowData[trackSelectionBy] === rowId || rowIndex === rowId ));
+      formattedRow.push (
+        <div className={styles.cellElement}>
+          <Checkbox checked={isSelected} onChange={() => this.onSelectRow(rowData[trackSelectionBy] || rowIndex)} />
+        </div>);
+    }
 
     _.forEach(columns, column => {
       if (column === trackSelectionBy) {
         return;
       } else {
-        formattedRow.push (<div className={styles.cellElement} key={column.key} onClick={() => this.props.onRowClick(rowData)}>{ rowData[column.key] }</div>);
+        formattedRow.push (<div className={styles.cellElement} key={column.field} onClick={(event) => this.props.onRowClick(event, rowData)}>{ rowData[column.field] }</div>);
       }
     });
 
@@ -89,7 +90,7 @@ class FfDataTable extends React.PureComponent {
     const { columns } = this.props;
 
     // index - 1 is done to ignore the header checkbox
-    const column = columns[index - 1].key;
+    const column = columns[index - 1].field;
     this.props.onSortChange(column, direction);
   }
 
@@ -108,7 +109,7 @@ class FfDataTable extends React.PureComponent {
   }
 
   render() {
-    const { rows, columns, sortBy, selectAllStatus } = this.props;
+    const { rows, columns, sortBy, selectAllStatus, onSelectionChange, loading } = this.props;
 
     // Prepare props for polaris table
     const columnContentTypes = [],
@@ -116,19 +117,20 @@ class FfDataTable extends React.PureComponent {
       columnSortable = [],
       formattedRows = [];
 
-    const sortedColumnIndex = _.findIndex(columns, col => col.key === sortBy.field);
+    const sortedColumnIndex = _.findIndex(columns, col => col.field === sortBy.field);
     const sortDirection = sortBy.order;
 
-    columnContentTypes.push('string');
-    columnSortable.push(false);
-
-    columnHeadings.push(<Checkbox checked={selectAllStatus} onChange={() => this.onSelectRow('all')} />);
+    if (onSelectionChange) {
+      columnContentTypes.push('string');
+      columnSortable.push(false);
+      columnHeadings.push(<Checkbox checked={selectAllStatus} onChange={() => this.onSelectRow('all')} />);
+    }
 
     _.each(columns, column => {
       columnContentTypes.push(column.type);
       columnHeadings.push(column.displayName);
       columnSortable.push(column.sortable);
-    })
+    });
 
     _.forEach(rows, (row, index) => {
       formattedRows.push(this.renderRows(row, index));
@@ -137,21 +139,26 @@ class FfDataTable extends React.PureComponent {
     return (
       <AppProvider>
         <Card>
-          <div id={tableId}>
+          <div ref={this.tableRef}>
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
-              sortable={columnSortable}
               rows={formattedRows}
               onSort={this.onColumnSort}
-              defaultSortDirection={sortDirection}
+              defaultSortDirection={sortDirection || "none"}
               initialSortColumnIndex={sortedColumnIndex}
             />
             {
-              !rows.length ?
+              !rows.length && loading ?
+              <div className={styles.noRecords}>
+                <Spinner />
+              </div> : null
+            }
+            {
+              !rows.length && !loading ?
                 <div className={styles.noRecords}>
                   No Records found
-              </div> : null
+                </div> : null
             }
           </div>
         </Card>
@@ -166,10 +173,11 @@ FfDataTable.defaultProps = {
 }
 
 FfDataTable.propTypes = {
+  loading: PropTypes.bool,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       displayName: PropTypes.string,
-      key: PropTypes.string,
+      field: PropTypes.string,
       sortable: PropTypes.bool,
       type: PropTypes.string
     })
@@ -197,10 +205,8 @@ FfDataTable.propTypes = {
     order: PropTypes.oneOf(['ascending', 'descending'])
   }),
 
-  selectAllStatus: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool
-  ]),
+  selectAllStatus: PropTypes.oneOf(['indeterminate', true, false]),
+
 
   /**
    * Index of row (from last) which will act as threshold
@@ -211,7 +217,9 @@ FfDataTable.propTypes = {
    * This method will be triggerd when the
    * threshold row is visible in viewport
    */
-  loadMoreRecords: PropTypes.func
+  loadMoreRecords: PropTypes.func,
+
+  loadingRecords: PropTypes.bool
 };
 
 export default FfDataTable;
