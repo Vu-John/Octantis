@@ -1,17 +1,47 @@
-tbody tr:hover th {
+.tableWrapper tbody tr:hover th {
   box-shadow: inset 2px 0 0 0 #007ace;
   cursor: pointer;
 }
 
-td {
+.tableWrapper td {
   cursor: pointer;
 }
 
-th, th button {
-  font-weight: bold !important;
+.tableWrapper {
+  background: #ffffff;
+  border: 1px solid #e0e2e8;
 }
 
-label {
+.tableWrapper thead th, th button {
+  font-weight: 500 !important;
+  font-size: 15px;
+}
+
+.tableWrapper > div > div:last-child > div {
+  margin-left: 0px !important;
+}
+
+.tableWrapper td, .tableWrapper th {
+  position: static;
+  min-width: 100px;
+  max-width: 400px;
+  border-bottom: .1rem solid #e0e2e8;
+  font-weight: 400 !important;
+}
+
+.tableWrapper > div > div:first-child {
+  display: none;
+}
+
+.tableWrapper > div > div:last-child {
+  max-width: 100%;
+}
+
+.tableWrapper table:after {
+  background: none;
+}
+
+.tableWrapper label {
   cursor: pointer;
 }
 
@@ -20,6 +50,8 @@ label {
   margin: 40px 0px;
 }
 
-.cellElement {
-  padding: 1.6rem;
+.tableCell {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis
 }

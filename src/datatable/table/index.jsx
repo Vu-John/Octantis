@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Card, DataTable, Checkbox, AppProvider, Spinner} from '@shopify/polaris';
+import {DataTable, Checkbox, AppProvider, Spinner} from '@shopify/polaris';
 import * as _ from 'lodash';
 
 import * as styles from './styles.css';
@@ -70,7 +70,7 @@ class FfDataTable extends React.PureComponent {
     if (onSelectionChange) {
       var isSelected = _.find(selectedRows, rowId => (rowData[trackSelectionBy] === rowId || rowIndex === rowId ));
       formattedRow.push (
-        <div className={styles.cellElement}>
+        <div>
           <Checkbox checked={isSelected} onChange={() => this.onSelectRow(rowData[trackSelectionBy] || rowIndex)} />
         </div>);
     }
@@ -79,7 +79,7 @@ class FfDataTable extends React.PureComponent {
       if (column === trackSelectionBy) {
         return;
       } else {
-        formattedRow.push (<div className={styles.cellElement} key={column.field} onClick={(event) => this.props.onRowClick(event, rowData)}>{ rowData[column.field] }</div>);
+        formattedRow.push (<div className={styles.tableCell} key={column.field} onClick={(event) => this.props.onRowClick(event, rowData)}>{ rowData[column.field] }</div>);
       }
     });
 
@@ -138,8 +138,7 @@ class FfDataTable extends React.PureComponent {
 
     return (
       <AppProvider>
-        <Card>
-          <div ref={this.tableRef}>
+          <div ref={this.tableRef} className={styles.tableWrapper}>
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
@@ -161,7 +160,6 @@ class FfDataTable extends React.PureComponent {
                 </div> : null
             }
           </div>
-        </Card>
       </AppProvider>
     );
   }
