@@ -117,13 +117,14 @@ class FfDataTable extends React.PureComponent {
       columnSortable = [],
       formattedRows = [];
 
-    const sortedColumnIndex = _.findIndex(columns, col => col.field === sortBy.field);
+    var sortedColumnIndex = _.findIndex(columns, col => col.field === sortBy.field);
     const sortDirection = sortBy.order;
 
     if (onSelectionChange) {
       columnContentTypes.push('string');
       columnSortable.push(false);
       columnHeadings.push(<Checkbox checked={selectAllStatus} onChange={() => this.onSelectRow('all')} />);
+      sortedColumnIndex += 1;
     }
 
     _.each(columns, column => {
@@ -142,9 +143,10 @@ class FfDataTable extends React.PureComponent {
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
+              sortable={columnSortable}
               rows={formattedRows}
               onSort={this.onColumnSort}
-              defaultSortDirection={sortDirection || "none"}
+              defaultSortDirection={sortDirection}
               initialSortColumnIndex={sortedColumnIndex}
             />
             {
