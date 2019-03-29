@@ -28,7 +28,9 @@ const Icon = (props) => {
 
 Icon.propTypes = {
   type: PropTypes.string,
-  source: PropTypes.string,
+  source: PropTypes.oneOfType(
+    [PropTypes.string, PropTypes.object]
+  ),
   onClick: PropTypes.func
 };
 
