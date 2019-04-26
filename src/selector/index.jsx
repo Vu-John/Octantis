@@ -11,19 +11,19 @@ class Selector extends Component {
   }
 
   componentDidMount() {
-    this.setValues(this.props);
+    this.setValuesFromProps(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-      this.setValues(nextProps);
+      this.setValuesFromProps(nextProps);
     }
 
-  setValues(props) {
+  setValuesFromProps(props) {
     const options = [];
     var selected;
     _.forEach(props.options, (opt, idx) => {
       options.push({ label: opt.label, value: idx });
-      if ((props.value !== undefined) && (props.value == opt.value)) {
+      if ((props.value !== undefined) && (props.value === opt.value)) {
         selected = idx;
       }
     });

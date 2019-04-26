@@ -109,7 +109,7 @@ class FfDataTable extends React.PureComponent {
   }
 
   render() {
-    const { rows, columns, sortBy, selectAllStatus, onSelectionChange, loading } = this.props;
+    const { rows, columns, sortBy, selectAllStatus, onSelectionChange, loadingRecords } = this.props;
 
     // Prepare props for polaris table
     const columnContentTypes = [],
@@ -139,7 +139,8 @@ class FfDataTable extends React.PureComponent {
 
     return (
       <AppProvider>
-          <div ref={this.tableRef} className={styles.tableWrapper}>
+          <div ref={this.tableRef}
+            className={loadingRecords ? [styles.tableWrapper, styles.loadingWrapper].join(' ') : styles.tableWrapper}>
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
@@ -150,13 +151,13 @@ class FfDataTable extends React.PureComponent {
               initialSortColumnIndex={sortedColumnIndex}
             />
             {
-              !rows.length && loading ?
-              <div className={styles.noRecords}>
+              !rows.length && loadingRecords ?
+              <div className={styles.loadingRecords}>
                 <Spinner />
               </div> : null
             }
             {
-              !rows.length && !loading ?
+              !rows.length && !loadingRecords ?
                 <div className={styles.noRecords}>
                   No Records found
                 </div> : null
@@ -173,7 +174,6 @@ FfDataTable.defaultProps = {
 }
 
 FfDataTable.propTypes = {
-  loading: PropTypes.bool,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       displayName: PropTypes.string,

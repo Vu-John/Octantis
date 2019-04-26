@@ -5,11 +5,19 @@
 
 .tableWrapper td {
   cursor: pointer;
+  padding: 0px;
 }
 
 .tableWrapper {
   background: #ffffff;
   border: 1px solid #e0e2e8;
+}
+
+.tableWrapper thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f9fafb;
+  z-index: 50;
 }
 
 .tableWrapper thead th, th button {
@@ -19,6 +27,7 @@
 
 .tableWrapper > div > div:last-child > div {
   margin-left: 0px !important;
+  max-height: calc(92vh - 230px);
 }
 
 .tableWrapper td, .tableWrapper th {
@@ -53,5 +62,16 @@
 .tableCell {
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis
+  text-overflow: ellipsis;
+  height: 100%;
+  padding: 1.6rem;
+}
+
+.loadingWrapper > div > div:last-child > div {
+  overflow: hidden;
+}
+
+.loadingRecords {
+  text-align: center;
+  margin: 20vh 0px;
 }
