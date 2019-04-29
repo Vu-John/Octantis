@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Card, DataTable, Checkbox, AppProvider, Spinner} from '@shopify/polaris';
+import {DataTable, Checkbox, AppProvider, Spinner} from '@shopify/polaris';
 import * as _ from 'lodash';
 
 import * as styles from './styles.css';
@@ -70,7 +70,7 @@ class FfDataTable extends React.PureComponent {
     if (onSelectionChange) {
       var isSelected = _.find(selectedRows, rowId => (rowData[trackSelectionBy] === rowId || rowIndex === rowId ));
       formattedRow.push (
-        <div className={styles.cellElement}>
+        <div>
           <Checkbox checked={isSelected} onChange={() => this.onSelectRow(rowData[trackSelectionBy] || rowIndex)} />
         </div>);
     }
@@ -79,7 +79,7 @@ class FfDataTable extends React.PureComponent {
       if (column === trackSelectionBy) {
         return;
       } else {
-        formattedRow.push (<div className={styles.cellElement} key={column.field} onClick={(event) => this.props.onRowClick(event, rowData)}>{ rowData[column.field] }</div>);
+        formattedRow.push (<div className={styles.tableCell} key={column.field} onClick={(event) => this.props.onRowClick(event, rowData)}>{ rowData[column.field] }</div>);
       }
     });
 
@@ -109,7 +109,7 @@ class FfDataTable extends React.PureComponent {
   }
 
   render() {
-    const { rows, columns, sortBy, selectAllStatus, onSelectionChange, loading } = this.props;
+    const { rows, columns, sortBy, selectAllStatus, onSelectionChange, loadingRecords } = this.props;
 
     // Prepare props for polaris table
     const columnContentTypes = [],
@@ -117,13 +117,14 @@ class FfDataTable extends React.PureComponent {
       columnSortable = [],
       formattedRows = [];
 
-    const sortedColumnIndex = _.findIndex(columns, col => col.field === sortBy.field);
+    var sortedColumnIndex = _.findIndex(columns, col => col.field === sortBy.field);
     const sortDirection = sortBy.order;
 
     if (onSelectionChange) {
       columnContentTypes.push('string');
       columnSortable.push(false);
       columnHeadings.push(<Checkbox checked={selectAllStatus} onChange={() => this.onSelectRow('all')} />);
+      sortedColumnIndex += 1;
     }
 
     _.each(columns, column => {
@@ -138,30 +139,30 @@ class FfDataTable extends React.PureComponent {
 
     return (
       <AppProvider>
-        <Card>
-          <div ref={this.tableRef}>
+          <div ref={this.tableRef}
+            className={loadingRecords ? [styles.tableWrapper, styles.loadingWrapper].join(' ') : styles.tableWrapper}>
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
+              sortable={columnSortable}
               rows={formattedRows}
               onSort={this.onColumnSort}
-              defaultSortDirection={sortDirection || "none"}
+              defaultSortDirection={sortDirection}
               initialSortColumnIndex={sortedColumnIndex}
             />
             {
-              !rows.length && loading ?
-              <div className={styles.noRecords}>
+              !rows.length && loadingRecords ?
+              <div className={styles.loadingRecords}>
                 <Spinner />
               </div> : null
             }
             {
-              !rows.length && !loading ?
+              !rows.length && !loadingRecords ?
                 <div className={styles.noRecords}>
                   No Records found
                 </div> : null
             }
           </div>
-        </Card>
       </AppProvider>
     );
   }
@@ -173,7 +174,6 @@ FfDataTable.defaultProps = {
 }
 
 FfDataTable.propTypes = {
-  loading: PropTypes.bool,
   columns: PropTypes.arrayOf(
     PropTypes.shape({
       displayName: PropTypes.string,
