@@ -140,18 +140,18 @@ class FfDataTable extends React.PureComponent {
     return (
       <AppProvider>
           <div ref={this.tableRef}
-            className={loadingRecords ? [styles.tableWrapper, styles.loadingWrapper].join(' ') : styles.tableWrapper}>
+            className={loadingRecords || !rows.length ? [styles.tableWrapper, styles.loadingWrapper].join(' ') : styles.tableWrapper}>
             <DataTable
               columnContentTypes={columnContentTypes}
               headings={columnHeadings}
               sortable={columnSortable}
-              rows={formattedRows}
+              rows={loadingRecords ? [] : formattedRows}
               onSort={this.onColumnSort}
               defaultSortDirection={sortDirection}
               initialSortColumnIndex={sortedColumnIndex}
             />
             {
-              !rows.length && loadingRecords ?
+              loadingRecords ?
               <div className={styles.loadingRecords}>
                 <Spinner />
               </div> : null
